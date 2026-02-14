@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1a0a2e">
+  <title>Antrenman Takip</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 100%);
+      min-height: 100vh;
+      color: #fff;
+      padding: 16px;
+      padding-bottom: 80px;
+    }
+    h1 { text-align: center; color: #e9d5ff; font-size: 24px; margin-bottom: 20px; }
+    h2 { color: #e9d5ff; font-size: 20px; margin-bottom: 16px; }
+    .back { color: #a855f7; font-size: 16px; margin-bottom: 12px; cursor: pointer; }
+    .day-btn {
+      background: #2d1b4e;
+      border: 1px solid #4c1d95;
+      border-radius: 12px;
+      padding: 18px 16px;
+      margin-bottom: 10px;
+      color: #e9d5ff;
+      font-size: 18px;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .day-btn.has-data { border-color: #22c55e; background: rgba(34,197,94,0.1); }
+    .day-btn span { color: #a855f7; font-size: 14px; }
+    .exercise {
+      background: #2d1b4e;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      overflow: hidden;
+      border: 1px solid #4c1d95;
+    }
+    .exercise-header {
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+    .exercise-name { font-weight: 600; font-size: 15px; }
+    .exercise-target { color: #9ca3af; font-size: 13px; }
+    .exercise-last {
+      background: rgba(168,85,247,0.15);
+      padding: 8px 14px;
+      font-size: 13px;
+      color: #22c55e;
+      border-top: 1px solid #4c1d95;
+    }
+    .exercise-input {
+      padding: 14px;
+      background: rgba(0,0,0,0.3);
+      border-top: 1px solid #4c1d95;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .exercise-input input {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #4c1d95;
+      background: #1a0a2e;
+      color: #fff;
+      font-size: 14px;
+      width: 100%;
+    }
+    .input-group { display: flex; flex-direction: column; gap: 4px; }
+    .input-group label { font-size: 11px; color: #9ca3af; }
+    .input-group.kg { flex: 1; min-width: 70px; }
+    .input-group.rep { flex: 1.5; min-width: 100px; }
+    .input-group.rir { flex: 0.8; min-width: 60px; }
+    .save-indicator {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #22c55e;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .save-indicator.show { opacity: 1; }
+    .check { color: #22c55e; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <div id="save-indicator" class="save-indicator">✓ Kaydedildi</div>
+
+  <script>
+    const DATA = {
+      'Pazartesi - İtiş': [
+        { id: 'bench', name: 'Bench Press', target: '2×5-6', last: '70kg 6×2 RIR0' },
+        { id: 'incline', name: 'Plate Loaded Incline', target: '2×5-6', last: '80kg 6,5 RIR0' },
+        { id: 'fly', name: 'Chest Fly', target: '1×6-8', last: '50kg 8 RIR0' },
+        { id: 'shoulder', name: 'Shoulder Press', target: '2×6-8', last: '35kg 6,7' },
+        { id: 'lateral', name: 'Cable Lateral Raise', target: '3×10-12', last: '7.5kg 10×3' },
+        { id: 'pushdown', name: 'Triceps Pushdown', target: '2×6-8', last: '54.5kg 8×2 RIR1' },
+        { id: 'overhead', name: 'Overhead Extension', target: '2×8-10', last: '32kg 6×2 RIR0' },
+        { id: 'crunch1', name: 'Cable Crunch', target: '3×10', last: '77.5kg 10×3' },
+        { id: 'calf1', name: 'Calf Raise', target: '3×20', last: 'BW 20×3' },
+      ],
+      'Salı - Çekiş': [
+        { id: 'row', name: 'Barbell Row', target: '3×6-8', last: '60kg 8×3 RIR0' },
+        { id: 'lat', name: 'Lat Pulldown', target: '2×6-8', last: '60kg 8×2 RIR0' },
+        { id: 'prow', name: 'Plate Loaded Row', target: '2×8-10', last: '40kg 8×2 RIR0' },
+        { id: 'incurl', name: 'Incline DB Curl', target: '2×6-8', last: '7.5kg 8×2 RIR0' },
+        { id: 'cable', name: 'Cable Curl', target: '2×6-8', last: '41kg 8×2 RIR0' },
+        { id: 'hammer', name: 'Hammer Curl', target: '2×8-10', last: '7.5kg 10×2' },
+        { id: 'reverse', name: 'Reverse Curl', target: '2×8-10', last: '15kg 10×2' },
+        { id: 'face', name: 'Face Pull', target: '3×15', last: '32kg 15×3 RIR0' },
+        { id: 'crunch2', name: 'Cable Crunch', target: '3×10', last: '82kg 10×3' },
+        { id: 'calf2', name: 'Calf Raise', target: '3×20', last: '20kg 10×3' },
+      ],
+      'Çarşamba - Bacak': [
+        { id: 'squat', name: 'Squat', target: '2×6-8', last: '90kg 6×2' },
+        { id: 'bulgarian', name: 'Bulgarian Split Squat', target: '2×8-10', last: '10kg 10×2' },
+        { id: 'legext', name: 'Leg Extension', target: '2×8-10', last: '63kg 8×2' },
+        { id: 'legcurl', name: 'Leg Curl', target: '3×8-10', last: '45kg 10×3' },
+        { id: 'crunch3', name: 'Cable Crunch', target: '3×10', last: '68kg 15×3' },
+        { id: 'calf3', name: 'Calf Raise', target: '3×20', last: '20kg 15×3' },
+      ],
+      'Cuma - İtiş Omuz': [
+        { id: 'ohp', name: 'OHP', target: '2×6-8', last: '42.5kg 8,6 RIR0' },
+        { id: 'lateral2', name: 'Cable Lateral Raise', target: '3×10-12', last: '5kg 12×3 RIR2' },
+        { id: 'incline2', name: 'Plate Loaded Incline', target: '2×5-6', last: '80kg 6×2 RIR0' },
+        { id: 'fly2', name: 'Chest Fly', target: '2×6-8', last: '55kg 8×2 RIR0' },
+        { id: 'rear', name: 'Rear Delt Fly', target: '2×8-10', last: '55kg 10×2 RIR2' },
+        { id: 'push2', name: 'Triceps Pushdown', target: '2×6-8', last: '59kg 8,7' },
+        { id: 'face2', name: 'Face Pull', target: '3×15', last: '32kg 15×3 RIR0' },
+        { id: 'crunch4', name: 'Cable Crunch', target: '3×10', last: '63kg 10×3' },
+        { id: 'calf4', name: 'Calf Raise', target: '3×20', last: '30kg 15×3' },
+      ],
+      'Cumartesi - Deadlift': [
+        { id: 'dead', name: 'Deadlift', target: '3×5', last: '110kg 5×3 RIR0' },
+        { id: 'pendlay', name: 'Pendlay Row', target: '2×6-8', last: '60kg 8×2 RIR2' },
+        { id: 'lat2', name: 'Lat Pulldown', target: '2×6-8', last: '60kg 8×2 RIR1' },
+        { id: 'prow2', name: 'Plate Loaded Row', target: '2×8-10', last: '37.5kg 8×2 RIR2' },
+        { id: 'hammer2', name: 'Hammer Curl', target: '2×8-10', last: '10kg 10×2 RIR0' },
+        { id: 'crunch5', name: 'Cable Crunch', target: '3×10', last: '82kg 10×3' },
+        { id: 'calf5', name: 'Calf Raise', target: '3×20', last: '20kg 10×3' },
+      ],
+    };
+
+    let currentDay = null;
+    let openExercise = null;
+    let savedData = JSON.parse(localStorage.getItem('workout-data') || '{}');
+
+    function save() {
+      localStorage.setItem('workout-data', JSON.stringify(savedData));
+      const indicator = document.getElementById('save-indicator');
+      indicator.classList.add('show');
+      setTimeout(() => indicator.classList.remove('show'), 1500);
+    }
+
+    function hasDayData(day) {
+      return Object.keys(savedData).some(k => k.startsWith(day));
+    }
+
+    function renderHome() {
+      const app = document.getElementById('app');
+      app.innerHTML = `
+        <h1>💪 Antrenman Takip</h1>
+        ${Object.keys(DATA).map(day => `
+          <button class="day-btn ${hasDayData(day) ? 'has-data' : ''}" onclick="openDay('${day}')">
+            ${day}
+            ${hasDayData(day) ? '<span class="check">✓</span>' : '<span>→</span>'}
+          </button>
+        `).join('')}
+      `;
+    }
+
+    function openDay(day) {
+      currentDay = day;
+      openExercise = null;
+      renderDay();
+    }
+
+    function goBack() {
+      currentDay = null;
+      renderHome();
+    }
+
+    function toggleExercise(index) {
+      openExercise = openExercise === index ? null : index;
+      renderDay();
+    }
+
+    function updateValue(exerciseId, field, value) {
+      const key = `${currentDay}-${exerciseId}-${field}`;
+      savedData[key] = value;
+      save();
+    }
+
+    function getValue(exerciseId, field) {
+      return savedData[`${currentDay}-${exerciseId}-${field}`] || '';
+    }
+
+    function renderDay() {
+      const exercises = DATA[currentDay];
+      const app = document.getElementById('app');
+      
+      app.innerHTML = `
+        <div class="back" onclick="goBack()">← Geri</div>
+        <h2>${currentDay}</h2>
+        ${exercises.map((ex, i) => `
+          <div class="exercise">
+            <div class="exercise-header" onclick="toggleExercise(${i})">
+              <div>
+                <div class="exercise-name">${ex.name}</div>
+                <div class="exercise-target">${ex.target}</div>
+              </div>
+              <span style="color: #a855f7">${openExercise === i ? '▼' : '▶'}</span>
+            </div>
+            <div class="exercise-last">Son: ${ex.last}</div>
+            ${openExercise === i ? `
+              <div class="exercise-input">
+                <div class="input-group kg">
+                  <label>KG</label>
+                  <input type="text" inputmode="decimal" value="${getValue(ex.id, 'kg')}" 
+                    onchange="updateValue('${ex.id}', 'kg', this.value)" placeholder="70">
+                </div>
+                <div class="input-group rep">
+                  <label>SET × REP</label>
+                  <input type="text" value="${getValue(ex.id, 'rep')}" 
+                    onchange="updateValue('${ex.id}', 'rep', this.value)" placeholder="6×2">
+                </div>
+                <div class="input-group rir">
+                  <label>RIR</label>
+                  <input type="text" inputmode="numeric" value="${getValue(ex.id, 'rir')}" 
+                    onchange="updateValue('${ex.id}', 'rir', this.value)" placeholder="1">
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        `).join('')}
+      `;
+    }
+
+    renderHome();
+  </script>
+</body>
+</html>
