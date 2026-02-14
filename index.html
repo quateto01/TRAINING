@@ -7,7 +7,6 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#1a0a2e">
   <title>Antrenman Takip</title>
-  <link rel="manifest" href="manifest.json">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -16,11 +15,11 @@
       min-height: 100vh;
       color: #fff;
       padding: 16px;
-      padding-bottom: 80px;
+      padding-bottom: 100px;
     }
     h1 { text-align: center; color: #e9d5ff; font-size: 24px; margin-bottom: 20px; }
     h2 { color: #e9d5ff; font-size: 20px; margin-bottom: 16px; }
-    .back { color: #a855f7; font-size: 16px; margin-bottom: 12px; cursor: pointer; }
+    .back { color: #a855f7; font-size: 16px; margin-bottom: 12px; cursor: pointer; display: inline-block; }
     .day-btn {
       background: #2d1b4e;
       border: 1px solid #4c1d95;
@@ -36,12 +35,11 @@
       justify-content: space-between;
       align-items: center;
     }
-    .day-btn.has-data { border-color: #22c55e; background: rgba(34,197,94,0.1); }
     .day-btn span { color: #a855f7; font-size: 14px; }
     .exercise {
       background: #2d1b4e;
       border-radius: 10px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
       overflow: hidden;
       border: 1px solid #4c1d95;
     }
@@ -53,36 +51,76 @@
       cursor: pointer;
     }
     .exercise-name { font-weight: 600; font-size: 15px; }
-    .exercise-target { color: #9ca3af; font-size: 13px; }
+    .exercise-target { color: #9ca3af; font-size: 13px; margin-top: 2px; }
     .exercise-last {
-      background: rgba(168,85,247,0.15);
-      padding: 8px 14px;
+      background: rgba(34,197,94,0.15);
+      padding: 10px 14px;
       font-size: 13px;
       color: #22c55e;
       border-top: 1px solid #4c1d95;
     }
+    .exercise-last strong { color: #4ade80; }
     .exercise-input {
-      padding: 14px;
+      padding: 12px;
       background: rgba(0,0,0,0.3);
       border-top: 1px solid #4c1d95;
+    }
+    .set-row {
       display: flex;
+      align-items: center;
       gap: 8px;
+      margin-bottom: 10px;
       flex-wrap: wrap;
     }
-    .exercise-input input {
-      padding: 10px;
+    .set-label {
+      width: 45px;
+      font-size: 13px;
+      color: #a855f7;
+      font-weight: 600;
+    }
+    .set-row input {
+      width: 55px;
+      padding: 10px 4px;
       border-radius: 8px;
       border: 1px solid #4c1d95;
       background: #1a0a2e;
       color: #fff;
       font-size: 14px;
-      width: 100%;
+      text-align: center;
     }
-    .input-group { display: flex; flex-direction: column; gap: 4px; }
-    .input-group label { font-size: 11px; color: #9ca3af; }
-    .input-group.kg { flex: 1; min-width: 70px; }
-    .input-group.rep { flex: 1.5; min-width: 100px; }
-    .input-group.rir { flex: 0.8; min-width: 60px; }
+    .set-row select {
+      padding: 10px 4px;
+      border-radius: 8px;
+      border: 1px solid #4c1d95;
+      background: #1a0a2e;
+      color: #fff;
+      font-size: 14px;
+    }
+    .set-row label {
+      font-size: 10px;
+      color: #9ca3af;
+    }
+    .add-set-btn {
+      width: 100%;
+      padding: 10px;
+      background: rgba(168,85,247,0.2);
+      border: 1px dashed #a855f7;
+      border-radius: 8px;
+      color: #a855f7;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .remove-set {
+      background: rgba(239,68,68,0.2);
+      border: none;
+      color: #ef4444;
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
     .save-indicator {
       position: fixed;
       bottom: 20px;
@@ -95,9 +133,10 @@
       font-size: 14px;
       opacity: 0;
       transition: opacity 0.3s;
+      z-index: 100;
     }
     .save-indicator.show { opacity: 1; }
-    .check { color: #22c55e; font-size: 18px; }
+    .arrow { color: #a855f7; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -105,83 +144,199 @@
   <div id="save-indicator" class="save-indicator">✓ Kaydedildi</div>
 
   <script>
-    const DATA = {
+    const PROGRAM = {
       'Pazartesi - İtiş': [
-        { id: 'bench', name: 'Bench Press', target: '2×5-6', last: '70kg 6×2 RIR0' },
-        { id: 'incline', name: 'Plate Loaded Incline', target: '2×5-6', last: '80kg 6,5 RIR0' },
-        { id: 'fly', name: 'Chest Fly', target: '1×6-8', last: '50kg 8 RIR0' },
-        { id: 'shoulder', name: 'Shoulder Press', target: '2×6-8', last: '35kg 6,7' },
-        { id: 'lateral', name: 'Cable Lateral Raise', target: '3×10-12', last: '7.5kg 10×3' },
-        { id: 'pushdown', name: 'Triceps Pushdown', target: '2×6-8', last: '54.5kg 8×2 RIR1' },
-        { id: 'overhead', name: 'Overhead Extension', target: '2×8-10', last: '32kg 6×2 RIR0' },
-        { id: 'crunch1', name: 'Cable Crunch', target: '3×10', last: '77.5kg 10×3' },
-        { id: 'calf1', name: 'Calf Raise', target: '3×20', last: 'BW 20×3' },
+        { name: 'Bench Press', target: '2×5-6', sets: 2 },
+        { name: 'Plate Loaded Incline', target: '2×5-6', sets: 2 },
+        { name: 'Chest Fly', target: '1×6-8', sets: 1 },
+        { name: 'Shoulder Press Machine', target: '2×6-8', sets: 2 },
+        { name: 'Cable Lateral Raise', target: '3×10-12', sets: 3 },
+        { name: 'Triceps Pushdown', target: '2×6-8', sets: 2 },
+        { name: 'Overhead Extension', target: '2×8-10', sets: 2 },
+        { name: 'Bilek', target: '2-3 set', sets: 2 },
       ],
       'Salı - Çekiş': [
-        { id: 'row', name: 'Barbell Row', target: '3×6-8', last: '60kg 8×3 RIR0' },
-        { id: 'lat', name: 'Lat Pulldown', target: '2×6-8', last: '60kg 8×2 RIR0' },
-        { id: 'prow', name: 'Plate Loaded Row', target: '2×8-10', last: '40kg 8×2 RIR0' },
-        { id: 'incurl', name: 'Incline DB Curl', target: '2×6-8', last: '7.5kg 8×2 RIR0' },
-        { id: 'cable', name: 'Cable Curl', target: '2×6-8', last: '41kg 8×2 RIR0' },
-        { id: 'hammer', name: 'Hammer Curl', target: '2×8-10', last: '7.5kg 10×2' },
-        { id: 'reverse', name: 'Reverse Curl', target: '2×8-10', last: '15kg 10×2' },
-        { id: 'face', name: 'Face Pull', target: '3×15', last: '32kg 15×3 RIR0' },
-        { id: 'crunch2', name: 'Cable Crunch', target: '3×10', last: '82kg 10×3' },
-        { id: 'calf2', name: 'Calf Raise', target: '3×20', last: '20kg 10×3' },
+        { name: 'Barbell Row', target: '3×6-8', sets: 3 },
+        { name: 'Lat Pulldown', target: '2×6-8', sets: 2 },
+        { name: 'Plate Loaded Row', target: '2×8-10', sets: 2 },
+        { name: 'Incline DB Curl', target: '2×6-8', sets: 2 },
+        { name: 'Cable Curl', target: '2×6-8', sets: 2 },
+        { name: 'Hammer Curl', target: '2×8-10', sets: 2 },
+        { name: 'Reverse Curl', target: '2×8-10', sets: 2 },
+        { name: 'Face Pull', target: '3×15', sets: 3 },
+        { name: 'Cable Crunch', target: '3×10-15', sets: 3 },
       ],
       'Çarşamba - Bacak': [
-        { id: 'squat', name: 'Squat', target: '2×6-8', last: '90kg 6×2' },
-        { id: 'bulgarian', name: 'Bulgarian Split Squat', target: '2×8-10', last: '10kg 10×2' },
-        { id: 'legext', name: 'Leg Extension', target: '2×8-10', last: '63kg 8×2' },
-        { id: 'legcurl', name: 'Leg Curl', target: '3×8-10', last: '45kg 10×3' },
-        { id: 'crunch3', name: 'Cable Crunch', target: '3×10', last: '68kg 15×3' },
-        { id: 'calf3', name: 'Calf Raise', target: '3×20', last: '20kg 15×3' },
+        { name: 'Squat', target: '2×6-8', sets: 2 },
+        { name: 'Bulgarian Split Squat', target: '2×8-10', sets: 2 },
+        { name: 'Leg Extension', target: '2×8-10', sets: 2 },
+        { name: 'Leg Curl', target: '3×8-10', sets: 3 },
+        { name: 'Calf Raise', target: '3×15-20', sets: 3 },
       ],
       'Cuma - İtiş Omuz': [
-        { id: 'ohp', name: 'OHP', target: '2×6-8', last: '42.5kg 8,6 RIR0' },
-        { id: 'lateral2', name: 'Cable Lateral Raise', target: '3×10-12', last: '5kg 12×3 RIR2' },
-        { id: 'incline2', name: 'Plate Loaded Incline', target: '2×5-6', last: '80kg 6×2 RIR0' },
-        { id: 'fly2', name: 'Chest Fly', target: '2×6-8', last: '55kg 8×2 RIR0' },
-        { id: 'rear', name: 'Rear Delt Fly', target: '2×8-10', last: '55kg 10×2 RIR2' },
-        { id: 'push2', name: 'Triceps Pushdown', target: '2×6-8', last: '59kg 8,7' },
-        { id: 'face2', name: 'Face Pull', target: '3×15', last: '32kg 15×3 RIR0' },
-        { id: 'crunch4', name: 'Cable Crunch', target: '3×10', last: '63kg 10×3' },
-        { id: 'calf4', name: 'Calf Raise', target: '3×20', last: '30kg 15×3' },
+        { name: 'Dips', target: '2×6-8', sets: 2 },
+        { name: 'Plate Loaded Incline', target: '2×5-6', sets: 2 },
+        { name: 'Chest Fly', target: '2×6-8', sets: 2 },
+        { name: 'OHP', target: '2×6-8', sets: 2 },
+        { name: 'Cable Lateral Raise', target: '3×10-12', sets: 3 },
+        { name: 'Rear Delt Fly', target: '2×8-10', sets: 2 },
+        { name: 'Triceps Pushdown', target: '2×6-8', sets: 2 },
+        { name: 'Face Pull', target: '3×15', sets: 3 },
+        { name: 'Bilek', target: '2-3 set', sets: 2 },
       ],
       'Cumartesi - Deadlift': [
-        { id: 'dead', name: 'Deadlift', target: '3×5', last: '110kg 5×3 RIR0' },
-        { id: 'pendlay', name: 'Pendlay Row', target: '2×6-8', last: '60kg 8×2 RIR2' },
-        { id: 'lat2', name: 'Lat Pulldown', target: '2×6-8', last: '60kg 8×2 RIR1' },
-        { id: 'prow2', name: 'Plate Loaded Row', target: '2×8-10', last: '37.5kg 8×2 RIR2' },
-        { id: 'hammer2', name: 'Hammer Curl', target: '2×8-10', last: '10kg 10×2 RIR0' },
-        { id: 'crunch5', name: 'Cable Crunch', target: '3×10', last: '82kg 10×3' },
-        { id: 'calf5', name: 'Calf Raise', target: '3×20', last: '20kg 10×3' },
+        { name: 'Deadlift', target: '3×5', sets: 3 },
+        { name: 'Pendlay Row', target: '2×6-8', sets: 2 },
+        { name: 'Lat Pulldown', target: '2×6-8', sets: 2 },
+        { name: 'Plate Loaded Row', target: '2×8-10', sets: 2 },
+        { name: 'Hammer Curl', target: '2×8-10', sets: 2 },
+        { name: 'Cable Crunch', target: '3×10-15', sets: 3 },
+        { name: 'Calf Raise', target: '3×15-20', sets: 3 },
       ],
+    };
+
+    const INITIAL_HISTORY = {
+      'Bench Press': { date: '2026-02-03', sets: [{kg:70,rep:6,rir:'0'},{kg:70,rep:6,rir:'0'}] },
+      'Plate Loaded Incline': { date: '2026-02-06', sets: [{kg:80,rep:6,rir:'0'},{kg:80,rep:6,rir:'0'}] },
+      'Chest Fly': { date: '2026-02-06', sets: [{kg:55,rep:8,rir:'0'},{kg:55,rep:8,rir:'0'}] },
+      'Shoulder Press Machine': { date: '2026-02-03', sets: [{kg:35,rep:6,rir:''},{kg:35,rep:7,rir:''}] },
+      'Cable Lateral Raise': { date: '2026-02-06', sets: [{kg:5,rep:12,rir:'2'},{kg:5,rep:12,rir:'2'},{kg:5,rep:12,rir:'2'}] },
+      'Triceps Pushdown': { date: '2026-02-06', sets: [{kg:59,rep:8,rir:''},{kg:59,rep:7,rir:''}] },
+      'Overhead Extension': { date: '2026-02-03', sets: [{kg:32,rep:6,rir:'0'},{kg:32,rep:6,rir:'0'}] },
+      'Barbell Row': { date: '2026-02-04', sets: [{kg:60,rep:8,rir:'0'},{kg:60,rep:8,rir:'0'},{kg:60,rep:8,rir:'0'}] },
+      'Lat Pulldown': { date: '2026-02-07', sets: [{kg:60,rep:8,rir:'1'},{kg:60,rep:8,rir:'1'}] },
+      'Plate Loaded Row': { date: '2026-02-07', sets: [{kg:37.5,rep:8,rir:'2'},{kg:37.5,rep:8,rir:'2'}] },
+      'Incline DB Curl': { date: '2026-02-04', sets: [{kg:7.5,rep:8,rir:'0'},{kg:7.5,rep:8,rir:'0'}] },
+      'Cable Curl': { date: '2026-02-04', sets: [{kg:41,rep:8,rir:'0'},{kg:41,rep:8,rir:'0'}] },
+      'Hammer Curl': { date: '2026-02-07', sets: [{kg:10,rep:10,rir:'0'},{kg:10,rep:10,rir:'0'}] },
+      'Reverse Curl': { date: '2026-02-04', sets: [{kg:15,rep:10,rir:''},{kg:15,rep:10,rir:''}] },
+      'Face Pull': { date: '2026-02-06', sets: [{kg:32,rep:15,rir:'0'},{kg:32,rep:15,rir:'0'},{kg:32,rep:15,rir:'0'}] },
+      'Squat': { date: '2026-02-11', sets: [{kg:90,rep:6,rir:''},{kg:90,rep:6,rir:''}] },
+      'Bulgarian Split Squat': { date: '2026-02-11', sets: [{kg:10,rep:10,rir:''},{kg:5,rep:10,rir:''}] },
+      'Leg Extension': { date: '2026-02-11', sets: [{kg:63,rep:8,rir:''},{kg:63,rep:8,rir:''}] },
+      'Leg Curl': { date: '2026-02-11', sets: [{kg:45,rep:10,rir:''},{kg:45,rep:10,rir:''},{kg:45,rep:10,rir:''}] },
+      'OHP': { date: '2026-02-06', sets: [{kg:42.5,rep:8,rir:'0'},{kg:42.5,rep:6,rir:'0'}] },
+      'Rear Delt Fly': { date: '2026-02-06', sets: [{kg:55,rep:10,rir:'2'},{kg:55,rep:10,rir:'2'}] },
+      'Deadlift': { date: '2026-02-07', sets: [{kg:110,rep:5,rir:'0'},{kg:110,rep:5,rir:'0'},{kg:110,rep:5,rir:'0'}] },
+      'Pendlay Row': { date: '2026-02-07', sets: [{kg:60,rep:8,rir:'2'},{kg:60,rep:8,rir:'2'}] },
+      'Cable Crunch': { date: '2026-02-11', sets: [{kg:68,rep:15,rir:''},{kg:68,rep:15,rir:''},{kg:68,rep:15,rir:''}] },
+      'Calf Raise': { date: '2026-02-11', sets: [{kg:20,rep:15,rir:''},{kg:20,rep:15,rir:''},{kg:20,rep:15,rir:''}] },
+      'Bilek': { date: '', sets: [] },
+      'Dips': { date: '', sets: [] },
     };
 
     let currentDay = null;
     let openExercise = null;
-    let savedData = JSON.parse(localStorage.getItem('workout-data') || '{}');
+    
+    let exerciseHistory = JSON.parse(localStorage.getItem('exercise-history-v4') || 'null') || JSON.parse(JSON.stringify(INITIAL_HISTORY));
+    let todayData = JSON.parse(localStorage.getItem('today-data-v4') || '{}');
+
+    const RIR_OPTIONS = ['', '0', '0.5', '1', '1.5', '2', '2.5', '3'];
 
     function save() {
-      localStorage.setItem('workout-data', JSON.stringify(savedData));
+      localStorage.setItem('exercise-history-v4', JSON.stringify(exerciseHistory));
+      localStorage.setItem('today-data-v4', JSON.stringify(todayData));
       const indicator = document.getElementById('save-indicator');
       indicator.classList.add('show');
       setTimeout(() => indicator.classList.remove('show'), 1500);
     }
 
-    function hasDayData(day) {
-      return Object.keys(savedData).some(k => k.startsWith(day));
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      const now = new Date();
+      const diff = Math.floor((now - d) / (1000 * 60 * 60 * 24));
+      if (diff === 0) return 'Bugün';
+      if (diff === 1) return 'Dün';
+      return `${diff} gün önce`;
+    }
+
+    function getLastRecord(exerciseName) {
+      return exerciseHistory[exerciseName] || null;
+    }
+
+    function formatLastRecord(record) {
+      if (!record || !record.sets || record.sets.length === 0) return null;
+      const setsStr = record.sets.map((s) => {
+        let str = `${s.kg}kg×${s.rep}`;
+        if (s.rir !== '' && s.rir !== undefined) str += ` R${s.rir}`;
+        return str;
+      }).join(' | ');
+      return { text: setsStr, date: formatDate(record.date) };
+    }
+
+    function getTodayKey(exerciseName) {
+      return exerciseName;
+    }
+
+    function getTodaySets(exerciseName, defaultCount) {
+      const key = getTodayKey(exerciseName);
+      if (todayData[key] && todayData[key].length > 0) return todayData[key];
+      const sets = [];
+      for (let i = 0; i < defaultCount; i++) {
+        sets.push({ kg: '', rep: '', rir: '' });
+      }
+      return sets;
+    }
+
+    function updateSet(exerciseName, setIndex, field, value) {
+      const key = getTodayKey(exerciseName);
+      if (!todayData[key]) {
+        const ex = PROGRAM[currentDay].find(e => e.name === exerciseName);
+        todayData[key] = getTodaySets(exerciseName, ex.sets);
+      }
+      todayData[key][setIndex][field] = value;
+      save();
+    }
+
+    function addSet(exerciseName) {
+      const key = getTodayKey(exerciseName);
+      const ex = PROGRAM[currentDay].find(e => e.name === exerciseName);
+      if (!todayData[key]) {
+        todayData[key] = getTodaySets(exerciseName, ex.sets);
+      }
+      todayData[key].push({ kg: '', rep: '', rir: '' });
+      save();
+      renderDay();
+    }
+
+    function removeSet(exerciseName, setIndex) {
+      const key = getTodayKey(exerciseName);
+      if (todayData[key] && todayData[key].length > 1) {
+        todayData[key].splice(setIndex, 1);
+        save();
+        renderDay();
+      }
+    }
+
+    function saveToHistory(exerciseName) {
+      const key = getTodayKey(exerciseName);
+      const sets = todayData[key];
+      if (sets && sets.some(s => s.kg && s.rep)) {
+        const validSets = sets.filter(s => s.kg && s.rep).map(s => ({
+          kg: parseFloat(s.kg),
+          rep: parseInt(s.rep),
+          rir: s.rir
+        }));
+        if (validSets.length > 0) {
+          exerciseHistory[exerciseName] = {
+            date: new Date().toISOString().split('T')[0],
+            sets: validSets
+          };
+          delete todayData[key];
+          save();
+        }
+      }
     }
 
     function renderHome() {
       const app = document.getElementById('app');
       app.innerHTML = `
         <h1>💪 Antrenman Takip</h1>
-        ${Object.keys(DATA).map(day => `
-          <button class="day-btn ${hasDayData(day) ? 'has-data' : ''}" onclick="openDay('${day}')">
+        ${Object.keys(PROGRAM).map(day => `
+          <button class="day-btn" onclick="openDay('${day}')">
             ${day}
-            ${hasDayData(day) ? '<span class="check">✓</span>' : '<span>→</span>'}
+            <span>→</span>
           </button>
         `).join('')}
       `;
@@ -194,63 +349,79 @@
     }
 
     function goBack() {
+      if (openExercise !== null) {
+        const ex = PROGRAM[currentDay][openExercise];
+        saveToHistory(ex.name);
+      }
       currentDay = null;
       renderHome();
     }
 
     function toggleExercise(index) {
+      if (openExercise !== null && openExercise !== index) {
+        const ex = PROGRAM[currentDay][openExercise];
+        saveToHistory(ex.name);
+      }
       openExercise = openExercise === index ? null : index;
       renderDay();
     }
 
-    function updateValue(exerciseId, field, value) {
-      const key = `${currentDay}-${exerciseId}-${field}`;
-      savedData[key] = value;
-      save();
-    }
-
-    function getValue(exerciseId, field) {
-      return savedData[`${currentDay}-${exerciseId}-${field}`] || '';
-    }
-
     function renderDay() {
-      const exercises = DATA[currentDay];
+      const exercises = PROGRAM[currentDay];
       const app = document.getElementById('app');
       
       app.innerHTML = `
         <div class="back" onclick="goBack()">← Geri</div>
         <h2>${currentDay}</h2>
-        ${exercises.map((ex, i) => `
-          <div class="exercise">
-            <div class="exercise-header" onclick="toggleExercise(${i})">
-              <div>
-                <div class="exercise-name">${ex.name}</div>
-                <div class="exercise-target">${ex.target}</div>
+        ${exercises.map((ex, i) => {
+          const lastRecord = getLastRecord(ex.name);
+          const formatted = formatLastRecord(lastRecord);
+          const sets = getTodaySets(ex.name, ex.sets);
+          const isOpen = openExercise === i;
+          
+          return `
+            <div class="exercise">
+              <div class="exercise-header" onclick="toggleExercise(${i})">
+                <div>
+                  <div class="exercise-name">${ex.name}</div>
+                  <div class="exercise-target">${ex.target}</div>
+                </div>
+                <span class="arrow">${isOpen ? '▼' : '▶'}</span>
               </div>
-              <span style="color: #a855f7">${openExercise === i ? '▼' : '▶'}</span>
+              ${formatted ? `
+                <div class="exercise-last">
+                  <strong>${formatted.date}:</strong> ${formatted.text}
+                </div>
+              ` : ''}
+              ${isOpen ? `
+                <div class="exercise-input">
+                  ${sets.map((set, si) => `
+                    <div class="set-row">
+                      <span class="set-label">Set ${si + 1}</span>
+                      <div>
+                        <input type="number" inputmode="decimal" step="0.5" placeholder="kg" value="${set.kg}" 
+                          onchange="updateSet('${ex.name}', ${si}, 'kg', this.value)">
+                        <label>kg</label>
+                      </div>
+                      <div>
+                        <input type="number" inputmode="numeric" placeholder="rep" value="${set.rep}" 
+                          onchange="updateSet('${ex.name}', ${si}, 'rep', this.value)">
+                        <label>rep</label>
+                      </div>
+                      <div>
+                        <select onchange="updateSet('${ex.name}', ${si}, 'rir', this.value)">
+                          ${RIR_OPTIONS.map(r => `<option value="${r}" ${set.rir == r ? 'selected' : ''}>${r === '' ? 'RIR' : r}</option>`).join('')}
+                        </select>
+                      </div>
+                      <button class="remove-set" onclick="removeSet('${ex.name}', ${si})">×</button>
+                    </div>
+                  `).join('')}
+                  <button class="add-set-btn" onclick="addSet('${ex.name}')">+ Set Ekle</button>
+                </div>
+              ` : ''}
             </div>
-            <div class="exercise-last">Son: ${ex.last}</div>
-            ${openExercise === i ? `
-              <div class="exercise-input">
-                <div class="input-group kg">
-                  <label>KG</label>
-                  <input type="text" inputmode="decimal" value="${getValue(ex.id, 'kg')}" 
-                    onchange="updateValue('${ex.id}', 'kg', this.value)" placeholder="70">
-                </div>
-                <div class="input-group rep">
-                  <label>SET × REP</label>
-                  <input type="text" value="${getValue(ex.id, 'rep')}" 
-                    onchange="updateValue('${ex.id}', 'rep', this.value)" placeholder="6×2">
-                </div>
-                <div class="input-group rir">
-                  <label>RIR</label>
-                  <input type="text" inputmode="numeric" value="${getValue(ex.id, 'rir')}" 
-                    onchange="updateValue('${ex.id}', 'rir', this.value)" placeholder="1">
-                </div>
-              </div>
-            ` : ''}
-          </div>
-        `).join('')}
+          `;
+        }).join('')}
       `;
     }
 
