@@ -5,28 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#1a0a2e">
+  <meta name="theme-color" content="#1a0a0a">
   <title>Antrenman Takip</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 100%);
+      background: linear-gradient(135deg, #1a0a0a 0%, #2d1515 50%, #1a0a0a 100%);
       min-height: 100vh;
       color: #fff;
       padding: 16px;
       padding-bottom: 100px;
     }
-    h1 { text-align: center; color: #e9d5ff; font-size: 24px; margin-bottom: 20px; }
-    h2 { color: #e9d5ff; font-size: 20px; margin-bottom: 16px; }
-    .back { color: #a855f7; font-size: 16px; margin-bottom: 12px; cursor: pointer; display: inline-block; }
+    h1 { text-align: center; color: #ffd5d5; font-size: 24px; margin-bottom: 20px; }
+    h2 { color: #ffd5d5; font-size: 20px; margin-bottom: 16px; }
+    .back { color: #e85555; font-size: 16px; margin-bottom: 12px; cursor: pointer; display: inline-block; }
     .day-btn {
-      background: #2d1b4e;
-      border: 1px solid #4c1d95;
+      background: #2d1515;
+      border: 1px solid #5c2020;
       border-radius: 12px;
       padding: 18px 16px;
       margin-bottom: 10px;
-      color: #e9d5ff;
+      color: #ffd5d5;
       font-size: 18px;
       width: 100%;
       text-align: left;
@@ -35,13 +35,13 @@
       justify-content: space-between;
       align-items: center;
     }
-    .day-btn span { color: #a855f7; font-size: 14px; }
+    .day-btn span { color: #e85555; font-size: 14px; }
     .exercise {
-      background: #2d1b4e;
+      background: #2d1515;
       border-radius: 10px;
       margin-bottom: 10px;
       overflow: hidden;
-      border: 1px solid #4c1d95;
+      border: 1px solid #5c2020;
     }
     .exercise-header {
       padding: 14px;
@@ -57,13 +57,13 @@
       padding: 10px 14px;
       font-size: 13px;
       color: #22c55e;
-      border-top: 1px solid #4c1d95;
+      border-top: 1px solid #5c2020;
     }
     .exercise-last strong { color: #4ade80; }
     .exercise-input {
       padding: 12px;
       background: rgba(0,0,0,0.3);
-      border-top: 1px solid #4c1d95;
+      border-top: 1px solid #5c2020;
     }
     .set-row {
       display: flex;
@@ -75,15 +75,15 @@
     .set-label {
       width: 45px;
       font-size: 13px;
-      color: #a855f7;
+      color: #e85555;
       font-weight: 600;
     }
     .set-row input {
       width: 55px;
       padding: 10px 4px;
       border-radius: 8px;
-      border: 1px solid #4c1d95;
-      background: #1a0a2e;
+      border: 1px solid #5c2020;
+      background: #1a0a0a;
       color: #fff;
       font-size: 14px;
       text-align: center;
@@ -91,8 +91,8 @@
     .set-row select {
       padding: 10px 4px;
       border-radius: 8px;
-      border: 1px solid #4c1d95;
-      background: #1a0a2e;
+      border: 1px solid #5c2020;
+      background: #1a0a0a;
       color: #fff;
       font-size: 14px;
     }
@@ -103,10 +103,10 @@
     .add-set-btn {
       width: 100%;
       padding: 10px;
-      background: rgba(168,85,247,0.2);
-      border: 1px dashed #a855f7;
+      background: rgba(232,85,85,0.2);
+      border: 1px dashed #e85555;
       border-radius: 8px;
-      color: #a855f7;
+      color: #e85555;
       font-size: 14px;
       cursor: pointer;
       margin-top: 8px;
@@ -136,7 +136,7 @@
       z-index: 100;
     }
     .save-indicator.show { opacity: 1; }
-    .arrow { color: #a855f7; font-size: 14px; }
+    .arrow { color: #e85555; font-size: 14px; }
   </style>
 </head>
 <body>
@@ -186,8 +186,8 @@
       ],
       'Cumartesi - Deadlift': [
         { name: 'Deadlift', target: '3×5', sets: 3 },
-        { name: 'Pendlay Row', target: '2×6-8', sets: 2 },
-        { name: 'Lat Pulldown', target: '2×6-8', sets: 2 },
+        { name: 'Weighted Barfiks', target: '2×6-8', sets: 2 },
+        { name: 'Cable Row', target: '2×6-8', sets: 2 },
         { name: 'Plate Loaded Row', target: '2×8-10', sets: 2 },
         { name: 'Hammer Curl', target: '2×8-10', sets: 2 },
         { name: 'Cable Crunch', target: '3×10-15', sets: 3 },
@@ -196,46 +196,48 @@
     };
 
     const INITIAL_HISTORY = {
-      'Bench Press': { date: '2026-02-03', sets: [{kg:70,rep:6,rir:'0'},{kg:70,rep:6,rir:'0'}] },
-      'Plate Loaded Incline': { date: '2026-02-06', sets: [{kg:80,rep:6,rir:'0'},{kg:80,rep:6,rir:'0'}] },
-      'Chest Fly': { date: '2026-02-06', sets: [{kg:55,rep:8,rir:'0'},{kg:55,rep:8,rir:'0'}] },
-      'Shoulder Press Machine': { date: '2026-02-03', sets: [{kg:35,rep:6,rir:''},{kg:35,rep:7,rir:''}] },
-      'Cable Lateral Raise': { date: '2026-02-06', sets: [{kg:5,rep:12,rir:'2'},{kg:5,rep:12,rir:'2'},{kg:5,rep:12,rir:'2'}] },
-      'Triceps Pushdown': { date: '2026-02-06', sets: [{kg:59,rep:8,rir:''},{kg:59,rep:7,rir:''}] },
-      'Overhead Extension': { date: '2026-02-03', sets: [{kg:32,rep:6,rir:'0'},{kg:32,rep:6,rir:'0'}] },
+      'Bench Press': { date: '2026-02-16', sets: [{kg:75,rep:6,rir:'0'},{kg:75,rep:6,rir:'0'}] },
+      'Plate Loaded Incline': { date: '2026-02-16', sets: [{kg:32.5,rep:6,rir:'0'},{kg:32.5,rep:5,rir:'0'}] },
+      'Chest Fly': { date: '2026-02-16', sets: [{kg:60,rep:8,rir:'1.5'},{kg:65,rep:8,rir:'0.5'}] },
+      'Shoulder Press Machine': { date: '2026-02-16', sets: [{kg:20,rep:8,rir:'0.5'},{kg:20,rep:8,rir:'0'}] },
+      'Cable Lateral Raise': { date: '2026-02-16', sets: [{kg:10,rep:12,rir:'2.5'},{kg:10,rep:12,rir:'1.5'},{kg:10,rep:12,rir:'1'}] },
+      'Triceps Pushdown': { date: '2026-02-16', sets: [{kg:68,rep:8,rir:'1'},{kg:68,rep:8,rir:'0'}] },
+      'Overhead Extension': { date: '2026-02-16', sets: [{kg:36.5,rep:10,rir:'0'},{kg:36.5,rep:10,rir:'0'}] },
       'Barbell Row': { date: '2026-02-04', sets: [{kg:60,rep:8,rir:'0'},{kg:60,rep:8,rir:'0'},{kg:60,rep:8,rir:'0'}] },
-      'Lat Pulldown': { date: '2026-02-07', sets: [{kg:60,rep:8,rir:'1'},{kg:60,rep:8,rir:'1'}] },
-      'Plate Loaded Row': { date: '2026-02-07', sets: [{kg:37.5,rep:8,rir:'2'},{kg:37.5,rep:8,rir:'2'}] },
+      'Lat Pulldown': { date: '2026-02-14', sets: [{kg:65,rep:8,rir:'0'},{kg:65,rep:8,rir:'0'}] },
+      'Plate Loaded Row': { date: '2026-02-14', sets: [{kg:40,rep:8,rir:'0'},{kg:40,rep:8,rir:'0'}] },
       'Incline DB Curl': { date: '2026-02-04', sets: [{kg:7.5,rep:8,rir:'0'},{kg:7.5,rep:8,rir:'0'}] },
       'Cable Curl': { date: '2026-02-04', sets: [{kg:41,rep:8,rir:'0'},{kg:41,rep:8,rir:'0'}] },
-      'Hammer Curl': { date: '2026-02-07', sets: [{kg:10,rep:10,rir:'0'},{kg:10,rep:10,rir:'0'}] },
+      'Hammer Curl': { date: '2026-02-14', sets: [{kg:12.5,rep:8,rir:'0'},{kg:12.5,rep:8,rir:'0'}] },
       'Reverse Curl': { date: '2026-02-04', sets: [{kg:15,rep:10,rir:''},{kg:15,rep:10,rir:''}] },
-      'Face Pull': { date: '2026-02-06', sets: [{kg:32,rep:15,rir:'0'},{kg:32,rep:15,rir:'0'},{kg:32,rep:15,rir:'0'}] },
+      'Face Pull': { date: '2026-02-14', sets: [{kg:36,rep:15,rir:'0'},{kg:36,rep:15,rir:'0'},{kg:36,rep:15,rir:'0'}] },
       'Squat': { date: '2026-02-11', sets: [{kg:90,rep:6,rir:''},{kg:90,rep:6,rir:''}] },
       'Bulgarian Split Squat': { date: '2026-02-11', sets: [{kg:10,rep:10,rir:''},{kg:5,rep:10,rir:''}] },
       'Leg Extension': { date: '2026-02-11', sets: [{kg:63,rep:8,rir:''},{kg:63,rep:8,rir:''}] },
       'Leg Curl': { date: '2026-02-11', sets: [{kg:45,rep:10,rir:''},{kg:45,rep:10,rir:''},{kg:45,rep:10,rir:''}] },
-      'OHP': { date: '2026-02-06', sets: [{kg:42.5,rep:8,rir:'0'},{kg:42.5,rep:6,rir:'0'}] },
-      'Rear Delt Fly': { date: '2026-02-06', sets: [{kg:55,rep:10,rir:'2'},{kg:55,rep:10,rir:'2'}] },
-      'Deadlift': { date: '2026-02-07', sets: [{kg:110,rep:5,rir:'0'},{kg:110,rep:5,rir:'0'},{kg:110,rep:5,rir:'0'}] },
-      'Pendlay Row': { date: '2026-02-07', sets: [{kg:60,rep:8,rir:'2'},{kg:60,rep:8,rir:'2'}] },
+      'OHP': { date: '2026-02-14', sets: [{kg:40,rep:8,rir:'0'},{kg:40,rep:6,rir:'0'}] },
+      'Rear Delt Fly': { date: '2026-02-14', sets: [{kg:60,rep:10,rir:'0'},{kg:60,rep:10,rir:'0'}] },
+      'Deadlift': { date: '2026-02-14', sets: [{kg:115,rep:5,rir:'0'},{kg:115,rep:5,rir:'0'}] },
+      'Weighted Barfiks': { date: '', sets: [] },
+      'Cable Row': { date: '', sets: [] },
+      'Dips': { date: '', sets: [] },
       'Cable Crunch': { date: '2026-02-11', sets: [{kg:68,rep:15,rir:''},{kg:68,rep:15,rir:''},{kg:68,rep:15,rir:''}] },
       'Calf Raise': { date: '2026-02-11', sets: [{kg:20,rep:15,rir:''},{kg:20,rep:15,rir:''},{kg:20,rep:15,rir:''}] },
-      'Bilek': { date: '', sets: [] },
-      'Dips': { date: '', sets: [] },
+      'Bilek': { date: '2026-02-14', sets: [{kg:22,rep:12,rir:''},{kg:22,rep:12,rir:''}] },
+      'Pendlay Row': { date: '2026-02-14', sets: [{kg:70,rep:6,rir:'0'},{kg:70,rep:7,rir:'0'}] },
     };
 
     let currentDay = null;
     let openExercise = null;
     
-    let exerciseHistory = JSON.parse(localStorage.getItem('exercise-history-v4') || 'null') || JSON.parse(JSON.stringify(INITIAL_HISTORY));
-    let todayData = JSON.parse(localStorage.getItem('today-data-v4') || '{}');
+    let exerciseHistory = JSON.parse(localStorage.getItem('exercise-history-v5') || 'null') || JSON.parse(JSON.stringify(INITIAL_HISTORY));
+    let todayData = JSON.parse(localStorage.getItem('today-data-v5') || '{}');
 
     const RIR_OPTIONS = ['', '0', '0.5', '1', '1.5', '2', '2.5', '3'];
 
     function save() {
-      localStorage.setItem('exercise-history-v4', JSON.stringify(exerciseHistory));
-      localStorage.setItem('today-data-v4', JSON.stringify(todayData));
+      localStorage.setItem('exercise-history-v5', JSON.stringify(exerciseHistory));
+      localStorage.setItem('today-data-v5', JSON.stringify(todayData));
       const indicator = document.getElementById('save-indicator');
       indicator.classList.add('show');
       setTimeout(() => indicator.classList.remove('show'), 1500);
