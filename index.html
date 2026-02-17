@@ -43,6 +43,10 @@
       overflow: hidden;
       border: 1px solid #5c2020;
     }
+    .exercise.torba {
+      background: #1a1a0a;
+      border: 1px solid #5c5c20;
+    }
     .exercise-header {
       padding: 14px;
       display: flex;
@@ -137,6 +141,12 @@
     }
     .save-indicator.show { opacity: 1; }
     .arrow { color: #e85555; font-size: 14px; }
+    .section-title {
+      color: #fbbf24;
+      font-size: 14px;
+      margin: 16px 0 8px 0;
+      padding-left: 4px;
+    }
   </style>
 </head>
 <body>
@@ -153,7 +163,8 @@
         { name: 'Cable Lateral Raise', target: '3×10-12', sets: 3 },
         { name: 'Triceps Pushdown', target: '2×6-8', sets: 2 },
         { name: 'Overhead Extension', target: '2×8-10', sets: 2 },
-        { name: 'Bilek', target: '2-3 set', sets: 2 },
+        { name: 'İp Atlama', target: '5 dk', sets: 1, torba: true },
+        { name: 'Kum Torbası - Kroşe', target: '100 tekrar', sets: 1, torba: true },
       ],
       'Salı - Çekiş': [
         { name: 'Barbell Row', target: '3×6-8', sets: 3 },
@@ -165,6 +176,8 @@
         { name: 'Reverse Curl', target: '2×8-10', sets: 2 },
         { name: 'Face Pull', target: '3×15', sets: 3 },
         { name: 'Cable Crunch', target: '3×10-15', sets: 3 },
+        { name: 'İp Atlama', target: '5 dk', sets: 1, torba: true },
+        { name: 'Kum Torbası - Mid Kick', target: '100 tekrar', sets: 1, torba: true },
       ],
       'Çarşamba - Bacak': [
         { name: 'Squat', target: '2×6-8', sets: 2 },
@@ -172,6 +185,8 @@
         { name: 'Leg Extension', target: '2×8-10', sets: 2 },
         { name: 'Leg Curl', target: '3×8-10', sets: 3 },
         { name: 'Calf Raise', target: '3×15-20', sets: 3 },
+        { name: 'İp Atlama', target: '5 dk', sets: 1, torba: true },
+        { name: 'Kum Torbası - Dirsek', target: '100 tekrar', sets: 1, torba: true },
       ],
       'Cuma - İtiş Omuz': [
         { name: 'Dips', target: '2×6-8', sets: 2 },
@@ -182,7 +197,8 @@
         { name: 'Rear Delt Fly', target: '2×8-10', sets: 2 },
         { name: 'Triceps Pushdown', target: '2×6-8', sets: 2 },
         { name: 'Face Pull', target: '3×15', sets: 3 },
-        { name: 'Bilek', target: '2-3 set', sets: 2 },
+        { name: 'İp Atlama', target: '5 dk', sets: 1, torba: true },
+        { name: 'Kum Torbası - Low Kick', target: '100 tekrar', sets: 1, torba: true },
       ],
       'Cumartesi - Deadlift': [
         { name: 'Deadlift', target: '3×5', sets: 3 },
@@ -192,6 +208,8 @@
         { name: 'Hammer Curl', target: '2×8-10', sets: 2 },
         { name: 'Cable Crunch', target: '3×10-15', sets: 3 },
         { name: 'Calf Raise', target: '3×15-20', sets: 3 },
+        { name: 'İp Atlama', target: '5 dk', sets: 1, torba: true },
+        { name: 'Kum Torbası - Direkt', target: '100 tekrar', sets: 1, torba: true },
       ],
     };
 
@@ -203,14 +221,14 @@
       'Cable Lateral Raise': { date: '2026-02-16', sets: [{kg:10,rep:12,rir:'2.5'},{kg:10,rep:12,rir:'1.5'},{kg:10,rep:12,rir:'1'}] },
       'Triceps Pushdown': { date: '2026-02-16', sets: [{kg:68,rep:8,rir:'1'},{kg:68,rep:8,rir:'0'}] },
       'Overhead Extension': { date: '2026-02-16', sets: [{kg:36.5,rep:10,rir:'0'},{kg:36.5,rep:10,rir:'0'}] },
-      'Barbell Row': { date: '2026-02-04', sets: [{kg:60,rep:8,rir:'0'},{kg:60,rep:8,rir:'0'},{kg:60,rep:8,rir:'0'}] },
-      'Lat Pulldown': { date: '2026-02-14', sets: [{kg:65,rep:8,rir:'0'},{kg:65,rep:8,rir:'0'}] },
-      'Plate Loaded Row': { date: '2026-02-14', sets: [{kg:40,rep:8,rir:'0'},{kg:40,rep:8,rir:'0'}] },
-      'Incline DB Curl': { date: '2026-02-04', sets: [{kg:7.5,rep:8,rir:'0'},{kg:7.5,rep:8,rir:'0'}] },
-      'Cable Curl': { date: '2026-02-04', sets: [{kg:41,rep:8,rir:'0'},{kg:41,rep:8,rir:'0'}] },
-      'Hammer Curl': { date: '2026-02-14', sets: [{kg:12.5,rep:8,rir:'0'},{kg:12.5,rep:8,rir:'0'}] },
-      'Reverse Curl': { date: '2026-02-04', sets: [{kg:15,rep:10,rir:''},{kg:15,rep:10,rir:''}] },
-      'Face Pull': { date: '2026-02-14', sets: [{kg:36,rep:15,rir:'0'},{kg:36,rep:15,rir:'0'},{kg:36,rep:15,rir:'0'}] },
+      'Barbell Row': { date: '2026-02-17', sets: [{kg:65,rep:8,rir:'2'},{kg:65,rep:8,rir:'1.5'},{kg:65,rep:8,rir:'1'}] },
+      'Lat Pulldown': { date: '2026-02-17', sets: [{kg:70,rep:8,rir:'0'},{kg:70,rep:8,rir:'0'}] },
+      'Plate Loaded Row': { date: '2026-02-17', sets: [{kg:45,rep:8,rir:'0'},{kg:45,rep:8,rir:'0'}] },
+      'Incline DB Curl': { date: '2026-02-17', sets: [{kg:10,rep:6,rir:'0.5'},{kg:10,rep:6,rir:'0.5'}] },
+      'Cable Curl': { date: '2026-02-17', sets: [{kg:45.5,rep:6,rir:'1'},{kg:45.5,rep:8,rir:'0'}] },
+      'Hammer Curl': { date: '2026-02-17', sets: [{kg:12.5,rep:9,rir:'0'},{kg:12.5,rep:8,rir:'0'}] },
+      'Reverse Curl': { date: '2026-02-17', sets: [{kg:20,rep:10,rir:'0'},{kg:20,rep:8,rir:'0'}] },
+      'Face Pull': { date: '2026-02-17', sets: [{kg:36.5,rep:15,rir:'2'},{kg:36.5,rep:15,rir:'1'},{kg:36.5,rep:15,rir:'1'}] },
       'Squat': { date: '2026-02-11', sets: [{kg:90,rep:6,rir:''},{kg:90,rep:6,rir:''}] },
       'Bulgarian Split Squat': { date: '2026-02-11', sets: [{kg:10,rep:10,rir:''},{kg:5,rep:10,rir:''}] },
       'Leg Extension': { date: '2026-02-11', sets: [{kg:63,rep:8,rir:''},{kg:63,rep:8,rir:''}] },
@@ -223,21 +241,25 @@
       'Dips': { date: '', sets: [] },
       'Cable Crunch': { date: '2026-02-11', sets: [{kg:68,rep:15,rir:''},{kg:68,rep:15,rir:''},{kg:68,rep:15,rir:''}] },
       'Calf Raise': { date: '2026-02-11', sets: [{kg:20,rep:15,rir:''},{kg:20,rep:15,rir:''},{kg:20,rep:15,rir:''}] },
-      'Bilek': { date: '2026-02-14', sets: [{kg:22,rep:12,rir:''},{kg:22,rep:12,rir:''}] },
-      'Pendlay Row': { date: '2026-02-14', sets: [{kg:70,rep:6,rir:'0'},{kg:70,rep:7,rir:'0'}] },
+      'İp Atlama': { date: '', sets: [] },
+      'Kum Torbası - Kroşe': { date: '', sets: [] },
+      'Kum Torbası - Mid Kick': { date: '', sets: [] },
+      'Kum Torbası - Dirsek': { date: '', sets: [] },
+      'Kum Torbası - Low Kick': { date: '', sets: [] },
+      'Kum Torbası - Direkt': { date: '', sets: [] },
     };
 
     let currentDay = null;
     let openExercise = null;
     
-    let exerciseHistory = JSON.parse(localStorage.getItem('exercise-history-v5') || 'null') || JSON.parse(JSON.stringify(INITIAL_HISTORY));
-    let todayData = JSON.parse(localStorage.getItem('today-data-v5') || '{}');
+    let exerciseHistory = JSON.parse(localStorage.getItem('exercise-history-v6') || 'null') || JSON.parse(JSON.stringify(INITIAL_HISTORY));
+    let todayData = JSON.parse(localStorage.getItem('today-data-v6') || '{}');
 
     const RIR_OPTIONS = ['', '0', '0.5', '1', '1.5', '2', '2.5', '3'];
 
     function save() {
-      localStorage.setItem('exercise-history-v5', JSON.stringify(exerciseHistory));
-      localStorage.setItem('today-data-v5', JSON.stringify(todayData));
+      localStorage.setItem('exercise-history-v6', JSON.stringify(exerciseHistory));
+      localStorage.setItem('today-data-v6', JSON.stringify(todayData));
       const indicator = document.getElementById('save-indicator');
       indicator.classList.add('show');
       setTimeout(() => indicator.classList.remove('show'), 1500);
@@ -372,18 +394,22 @@
       const exercises = PROGRAM[currentDay];
       const app = document.getElementById('app');
       
+      const regularExercises = exercises.filter(e => !e.torba);
+      const torbaExercises = exercises.filter(e => e.torba);
+      
       app.innerHTML = `
         <div class="back" onclick="goBack()">← Geri</div>
         <h2>${currentDay}</h2>
-        ${exercises.map((ex, i) => {
+        ${regularExercises.map((ex, i) => {
           const lastRecord = getLastRecord(ex.name);
           const formatted = formatLastRecord(lastRecord);
           const sets = getTodaySets(ex.name, ex.sets);
-          const isOpen = openExercise === i;
+          const realIndex = exercises.indexOf(ex);
+          const isOpen = openExercise === realIndex;
           
           return `
             <div class="exercise">
-              <div class="exercise-header" onclick="toggleExercise(${i})">
+              <div class="exercise-header" onclick="toggleExercise(${realIndex})">
                 <div>
                   <div class="exercise-name">${ex.name}</div>
                   <div class="exercise-target">${ex.target}</div>
@@ -421,6 +447,21 @@
                   <button class="add-set-btn" onclick="addSet('${ex.name}')">+ Set Ekle</button>
                 </div>
               ` : ''}
+            </div>
+          `;
+        }).join('')}
+        
+        <div class="section-title">🥊 Kum Torbası</div>
+        ${torbaExercises.map((ex, i) => {
+          const realIndex = exercises.indexOf(ex);
+          return `
+            <div class="exercise torba">
+              <div class="exercise-header">
+                <div>
+                  <div class="exercise-name">${ex.name}</div>
+                  <div class="exercise-target">${ex.target}</div>
+                </div>
+              </div>
             </div>
           `;
         }).join('')}
