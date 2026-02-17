@@ -59,7 +59,7 @@
     .exercise-last {
       background: rgba(34,197,94,0.15);
       padding: 10px 14px;
-      font-size: 13px;
+      font-size: 12px;
       color: #22c55e;
       border-top: 1px solid #5c2020;
     }
@@ -72,36 +72,36 @@
     .set-row {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       margin-bottom: 10px;
       flex-wrap: wrap;
     }
     .set-label {
-      width: 45px;
-      font-size: 13px;
+      width: 40px;
+      font-size: 12px;
       color: #e85555;
       font-weight: 600;
     }
     .set-row input {
-      width: 55px;
-      padding: 10px 4px;
+      width: 50px;
+      padding: 8px 2px;
       border-radius: 8px;
       border: 1px solid #5c2020;
       background: #1a0a0a;
       color: #fff;
-      font-size: 14px;
+      font-size: 13px;
       text-align: center;
     }
     .set-row select {
-      padding: 10px 4px;
+      padding: 8px 2px;
       border-radius: 8px;
       border: 1px solid #5c2020;
       background: #1a0a0a;
       color: #fff;
-      font-size: 14px;
+      font-size: 12px;
     }
     .set-row label {
-      font-size: 10px;
+      font-size: 9px;
       color: #9ca3af;
     }
     .add-set-btn {
@@ -119,10 +119,10 @@
       background: rgba(239,68,68,0.2);
       border: none;
       color: #ef4444;
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 6px;
-      font-size: 16px;
+      font-size: 14px;
       cursor: pointer;
     }
     .save-indicator {
@@ -214,33 +214,33 @@
     };
 
     const INITIAL_HISTORY = {
-      'Bench Press': { date: '2026-02-16', sets: [{kg:75,rep:6,rir:'0'},{kg:75,rep:6,rir:'0'}] },
-      'Plate Loaded Incline': { date: '2026-02-16', sets: [{kg:32.5,rep:6,rir:'0'},{kg:32.5,rep:5,rir:'0'}] },
-      'Chest Fly': { date: '2026-02-16', sets: [{kg:60,rep:8,rir:'1.5'},{kg:65,rep:8,rir:'0.5'}] },
-      'Shoulder Press Machine': { date: '2026-02-16', sets: [{kg:20,rep:8,rir:'0.5'},{kg:20,rep:8,rir:'0'}] },
-      'Cable Lateral Raise': { date: '2026-02-16', sets: [{kg:10,rep:12,rir:'2.5'},{kg:10,rep:12,rir:'1.5'},{kg:10,rep:12,rir:'1'}] },
-      'Triceps Pushdown': { date: '2026-02-16', sets: [{kg:68,rep:8,rir:'1'},{kg:68,rep:8,rir:'0'}] },
-      'Overhead Extension': { date: '2026-02-16', sets: [{kg:36.5,rep:10,rir:'0'},{kg:36.5,rep:10,rir:'0'}] },
-      'Barbell Row': { date: '2026-02-17', sets: [{kg:65,rep:8,rir:'2'},{kg:65,rep:8,rir:'1.5'},{kg:65,rep:8,rir:'1'}] },
-      'Lat Pulldown': { date: '2026-02-17', sets: [{kg:70,rep:8,rir:'0'},{kg:70,rep:8,rir:'0'}] },
-      'Plate Loaded Row': { date: '2026-02-17', sets: [{kg:45,rep:8,rir:'0'},{kg:45,rep:8,rir:'0'}] },
-      'Incline DB Curl': { date: '2026-02-17', sets: [{kg:10,rep:6,rir:'0.5'},{kg:10,rep:6,rir:'0.5'}] },
-      'Cable Curl': { date: '2026-02-17', sets: [{kg:45.5,rep:6,rir:'1'},{kg:45.5,rep:8,rir:'0'}] },
-      'Hammer Curl': { date: '2026-02-17', sets: [{kg:12.5,rep:9,rir:'0'},{kg:12.5,rep:8,rir:'0'}] },
-      'Reverse Curl': { date: '2026-02-17', sets: [{kg:20,rep:10,rir:'0'},{kg:20,rep:8,rir:'0'}] },
-      'Face Pull': { date: '2026-02-17', sets: [{kg:36.5,rep:15,rir:'2'},{kg:36.5,rep:15,rir:'1'},{kg:36.5,rep:15,rir:'1'}] },
-      'Squat': { date: '2026-02-11', sets: [{kg:90,rep:6,rir:''},{kg:90,rep:6,rir:''}] },
-      'Bulgarian Split Squat': { date: '2026-02-11', sets: [{kg:10,rep:10,rir:''},{kg:5,rep:10,rir:''}] },
-      'Leg Extension': { date: '2026-02-11', sets: [{kg:63,rep:8,rir:''},{kg:63,rep:8,rir:''}] },
-      'Leg Curl': { date: '2026-02-11', sets: [{kg:45,rep:10,rir:''},{kg:45,rep:10,rir:''},{kg:45,rep:10,rir:''}] },
-      'OHP': { date: '2026-02-14', sets: [{kg:40,rep:8,rir:'0'},{kg:40,rep:6,rir:'0'}] },
-      'Rear Delt Fly': { date: '2026-02-14', sets: [{kg:60,rep:10,rir:'0'},{kg:60,rep:10,rir:'0'}] },
-      'Deadlift': { date: '2026-02-14', sets: [{kg:115,rep:5,rir:'0'},{kg:115,rep:5,rir:'0'}] },
+      'Bench Press': { date: '2026-02-16', sets: [{kg:75,rep:6,rir:'0',cheat:''},{kg:75,rep:6,rir:'0',cheat:''}] },
+      'Plate Loaded Incline': { date: '2026-02-16', sets: [{kg:32.5,rep:6,rir:'0',cheat:''},{kg:32.5,rep:5,rir:'0',cheat:''}] },
+      'Chest Fly': { date: '2026-02-16', sets: [{kg:60,rep:8,rir:'1.5',cheat:''},{kg:65,rep:8,rir:'0.5',cheat:''}] },
+      'Shoulder Press Machine': { date: '2026-02-16', sets: [{kg:20,rep:8,rir:'0.5',cheat:''},{kg:20,rep:8,rir:'0',cheat:''}] },
+      'Cable Lateral Raise': { date: '2026-02-16', sets: [{kg:10,rep:12,rir:'2.5',cheat:''},{kg:10,rep:12,rir:'1.5',cheat:''},{kg:10,rep:12,rir:'1',cheat:''}] },
+      'Triceps Pushdown': { date: '2026-02-16', sets: [{kg:68,rep:8,rir:'1',cheat:''},{kg:68,rep:8,rir:'0',cheat:''}] },
+      'Overhead Extension': { date: '2026-02-16', sets: [{kg:36.5,rep:10,rir:'0',cheat:''},{kg:36.5,rep:10,rir:'0',cheat:''}] },
+      'Barbell Row': { date: '2026-02-17', sets: [{kg:65,rep:8,rir:'2',cheat:''},{kg:65,rep:8,rir:'1.5',cheat:''},{kg:65,rep:8,rir:'1',cheat:''}] },
+      'Lat Pulldown': { date: '2026-02-17', sets: [{kg:70,rep:8,rir:'0',cheat:''},{kg:70,rep:8,rir:'0',cheat:''}] },
+      'Plate Loaded Row': { date: '2026-02-17', sets: [{kg:45,rep:8,rir:'0',cheat:''},{kg:45,rep:8,rir:'0',cheat:''}] },
+      'Incline DB Curl': { date: '2026-02-17', sets: [{kg:10,rep:6,rir:'0.5',cheat:''},{kg:10,rep:6,rir:'0.5',cheat:''}] },
+      'Cable Curl': { date: '2026-02-17', sets: [{kg:45.5,rep:6,rir:'1',cheat:''},{kg:45.5,rep:8,rir:'0',cheat:''}] },
+      'Hammer Curl': { date: '2026-02-17', sets: [{kg:12.5,rep:9,rir:'0',cheat:''},{kg:12.5,rep:8,rir:'0',cheat:''}] },
+      'Reverse Curl': { date: '2026-02-17', sets: [{kg:20,rep:10,rir:'0',cheat:''},{kg:20,rep:8,rir:'0',cheat:''}] },
+      'Face Pull': { date: '2026-02-17', sets: [{kg:36.5,rep:15,rir:'2',cheat:''},{kg:36.5,rep:15,rir:'1',cheat:''},{kg:36.5,rep:15,rir:'1',cheat:''}] },
+      'Squat': { date: '2026-02-11', sets: [{kg:90,rep:6,rir:'',cheat:''},{kg:90,rep:6,rir:'',cheat:''}] },
+      'Bulgarian Split Squat': { date: '2026-02-11', sets: [{kg:10,rep:10,rir:'',cheat:''},{kg:5,rep:10,rir:'',cheat:''}] },
+      'Leg Extension': { date: '2026-02-11', sets: [{kg:63,rep:8,rir:'',cheat:''},{kg:63,rep:8,rir:'',cheat:''}] },
+      'Leg Curl': { date: '2026-02-11', sets: [{kg:45,rep:10,rir:'',cheat:''},{kg:45,rep:10,rir:'',cheat:''},{kg:45,rep:10,rir:'',cheat:''}] },
+      'OHP': { date: '2026-02-14', sets: [{kg:40,rep:8,rir:'0',cheat:''},{kg:40,rep:6,rir:'0',cheat:''}] },
+      'Rear Delt Fly': { date: '2026-02-14', sets: [{kg:60,rep:10,rir:'0',cheat:''},{kg:60,rep:10,rir:'0',cheat:''}] },
+      'Deadlift': { date: '2026-02-14', sets: [{kg:115,rep:5,rir:'0',cheat:''},{kg:115,rep:5,rir:'0',cheat:''}] },
       'Weighted Barfiks': { date: '', sets: [] },
       'Cable Row': { date: '', sets: [] },
       'Dips': { date: '', sets: [] },
-      'Cable Crunch': { date: '2026-02-11', sets: [{kg:68,rep:15,rir:''},{kg:68,rep:15,rir:''},{kg:68,rep:15,rir:''}] },
-      'Calf Raise': { date: '2026-02-11', sets: [{kg:20,rep:15,rir:''},{kg:20,rep:15,rir:''},{kg:20,rep:15,rir:''}] },
+      'Cable Crunch': { date: '2026-02-11', sets: [{kg:68,rep:15,rir:'',cheat:''},{kg:68,rep:15,rir:'',cheat:''},{kg:68,rep:15,rir:'',cheat:''}] },
+      'Calf Raise': { date: '2026-02-11', sets: [{kg:20,rep:15,rir:'',cheat:''},{kg:20,rep:15,rir:'',cheat:''},{kg:20,rep:15,rir:'',cheat:''}] },
       'İp Atlama': { date: '', sets: [] },
       'Kum Torbası - Kroşe': { date: '', sets: [] },
       'Kum Torbası - Mid Kick': { date: '', sets: [] },
@@ -252,14 +252,15 @@
     let currentDay = null;
     let openExercise = null;
     
-    let exerciseHistory = JSON.parse(localStorage.getItem('exercise-history-v6') || 'null') || JSON.parse(JSON.stringify(INITIAL_HISTORY));
-    let todayData = JSON.parse(localStorage.getItem('today-data-v6') || '{}');
+    let exerciseHistory = JSON.parse(localStorage.getItem('exercise-history-v7') || 'null') || JSON.parse(JSON.stringify(INITIAL_HISTORY));
+    let todayData = JSON.parse(localStorage.getItem('today-data-v7') || '{}');
 
     const RIR_OPTIONS = ['', '0', '0.5', '1', '1.5', '2', '2.5', '3'];
+    const CHEAT_OPTIONS = ['', '0', '0.5', '1', '1.5', '2', '2.5', '3'];
 
     function save() {
-      localStorage.setItem('exercise-history-v6', JSON.stringify(exerciseHistory));
-      localStorage.setItem('today-data-v6', JSON.stringify(todayData));
+      localStorage.setItem('exercise-history-v7', JSON.stringify(exerciseHistory));
+      localStorage.setItem('today-data-v7', JSON.stringify(todayData));
       const indicator = document.getElementById('save-indicator');
       indicator.classList.add('show');
       setTimeout(() => indicator.classList.remove('show'), 1500);
@@ -284,6 +285,7 @@
       const setsStr = record.sets.map((s) => {
         let str = `${s.kg}kg×${s.rep}`;
         if (s.rir !== '' && s.rir !== undefined) str += ` R${s.rir}`;
+        if (s.cheat !== '' && s.cheat !== undefined) str += ` C${s.cheat}`;
         return str;
       }).join(' | ');
       return { text: setsStr, date: formatDate(record.date) };
@@ -298,7 +300,7 @@
       if (todayData[key] && todayData[key].length > 0) return todayData[key];
       const sets = [];
       for (let i = 0; i < defaultCount; i++) {
-        sets.push({ kg: '', rep: '', rir: '' });
+        sets.push({ kg: '', rep: '', rir: '', cheat: '' });
       }
       return sets;
     }
@@ -319,7 +321,7 @@
       if (!todayData[key]) {
         todayData[key] = getTodaySets(exerciseName, ex.sets);
       }
-      todayData[key].push({ kg: '', rep: '', rir: '' });
+      todayData[key].push({ kg: '', rep: '', rir: '', cheat: '' });
       save();
       renderDay();
     }
@@ -340,7 +342,8 @@
         const validSets = sets.filter(s => s.kg && s.rep).map(s => ({
           kg: parseFloat(s.kg),
           rep: parseInt(s.rep),
-          rir: s.rir
+          rir: s.rir,
+          cheat: s.cheat
         }));
         if (validSets.length > 0) {
           exerciseHistory[exerciseName] = {
@@ -439,6 +442,11 @@
                       <div>
                         <select onchange="updateSet('${ex.name}', ${si}, 'rir', this.value)">
                           ${RIR_OPTIONS.map(r => `<option value="${r}" ${set.rir == r ? 'selected' : ''}>${r === '' ? 'RIR' : r}</option>`).join('')}
+                        </select>
+                      </div>
+                      <div>
+                        <select onchange="updateSet('${ex.name}', ${si}, 'cheat', this.value)">
+                          ${CHEAT_OPTIONS.map(c => `<option value="${c}" ${set.cheat == c ? 'selected' : ''}>${c === '' ? 'CHT' : c}</option>`).join('')}
                         </select>
                       </div>
                       <button class="remove-set" onclick="removeSet('${ex.name}', ${si})">×</button>
